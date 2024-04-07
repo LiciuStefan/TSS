@@ -1,0 +1,23 @@
+{
+  "name": "production-eng-service",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "11"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.makefile-tools",
+        "ritwickdey.LiveServer",
+        "rangav.vscode-thunder-client",
+        "vscjava.vscode-gradle"
+      ]
+    }
+  },
+  "forwardPorts": [8080]
+}
