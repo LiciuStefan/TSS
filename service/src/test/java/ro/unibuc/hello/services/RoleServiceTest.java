@@ -49,6 +49,7 @@ public class RoleServiceTest {
         verify(roleRepository, times(1)).findAll();
     }
 
+    // Equivalence partitioning: role name exists, role name does not exist in the database
     @Test
     void test_getByName_returnsRoleDTO() {
         Role role = new Role("role1", new ArrayList<>());
@@ -71,6 +72,8 @@ public class RoleServiceTest {
         }
         verify(roleRepository, times(1)).findByName("role1");
     }
+
+    // Equivalence partitioning: role name is empty, role name is not empty
 
     @Test
     void test_addRole_returnsRoleDTO() {
@@ -103,6 +106,42 @@ public class RoleServiceTest {
         verify(roleRepository, times(1)).findByName("role1");
     }
 
+    @Test
+    void test_addRole_throwsIllegalArgumentException() {
+        RoleCreateRequest roleCreateRequest = new RoleCreateRequest("", List.of("1", "2"));
+
+        try {
+            roleService.addRole(roleCreateRequest);
+        } catch (Exception e) {
+            assertEquals("Role name cannot be empty", e.getMessage());
+        }
+        verify(roleRepository, times(0)).findByName("");
+    }
+
+    // Boundary testing: role name has only one character.
+    @Test
+    void test_addRole_boundary_returnsRoleDTO() {
+        RoleCreateRequest roleCreateRequest = new RoleCreateRequest("r", List.of("1", "2"));
+
+        when(roleRepository.findByName("r")).thenReturn(Optional.empty());
+        when(policyService.getPolicyById("1")).thenReturn(new PolicyDTO("1", "policy1", new ArrayList<>()));
+        when(policyService.getPolicyById("2")).thenReturn(new PolicyDTO("2", "policy2", new ArrayList<>()));
+
+        var result = roleService.addRole(roleCreateRequest);
+
+        assertEquals("r", result.getName());
+        verify(roleRepository, times(1)).findByName("r");
+        verify(policyService, times(1)).getPolicyById("1");
+        verify(policyService, times(1)).getPolicyById("2");
+        verify(roleRepository, times(1)).save(any());
+    }
+
+    /* Equivalence partitioning:
+        * 1. the name of the role and the role name that we update to are both valid
+        * 2. the name of the role that we want to update does not exist in the database
+        * 3. role name that we update to is already taken by another role
+        * 4. role name that we update to is an empty string
+     */
     @Test
     void test_updateRole_returnsRoleDTO() {
         RoleCreateRequest roleCreateRequest = new RoleCreateRequest("role1", List.of("1", "2"));
@@ -155,6 +194,18 @@ public class RoleServiceTest {
         verify(roleRepository, times(1)).findByName("newRoleName");
         verify(roleRepository, times(0)).findByName("currentRoleName");
         verify(roleRepository, times(0)).save(any());
+    }
+
+    @Test
+    void test_updateRole_throwsIllegalArgumentException() {
+        RoleCreateRequest roleCreateRequest = new RoleCreateRequest("", List.of("1", "2"));
+
+        try {
+            roleService.updateRole("role1", roleCreateRequest);
+        } catch (Exception e) {
+            assertEquals("Role name cannot be empty", e.getMessage());
+        }
+        verify(roleRepository, times(0)).findByName("");
     }
 
     @Test

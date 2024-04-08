@@ -34,6 +34,8 @@ public class RoleService {
     }
 
     public RoleDTO addRole(RoleCreateRequest roleCreateRequest) {
+        if(roleCreateRequest.getName().equals(""))
+            throw new IllegalArgumentException("Role name cannot be empty");
         var existingRole = roleRepository.findByName(roleCreateRequest.getName());
         if (existingRole.isPresent()) {
             throw new EntityAlreadyExistsException("Role");
@@ -49,6 +51,8 @@ public class RoleService {
     }
 
     public RoleDTO updateRole(String name, RoleCreateRequest roleCreateRequest) {
+        if(roleCreateRequest.getName().equals(""))
+            throw new IllegalArgumentException("Role name cannot be empty");
         // Check if the new name we want to update is already taken by another role different from the one
         // we want to update (role names should be unique).
         var existingRole = roleRepository.findByName(roleCreateRequest.getName());
