@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import ro.unibuc.hello.exceptions.EntityAlreadyExistsException;
 import ro.unibuc.hello.exceptions.EntityNotFoundException;
+import ro.unibuc.hello.exceptions.UserNotAuthorizedException;
 
 @ControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
@@ -31,5 +32,13 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
         logger.warn(exception.getMessage());
         return new ResponseEntity<>(Map.of("message", exception.getMessage()),
             HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {UserNotAuthorizedException.class})
+    public ResponseEntity<?> handleUserNotAuthorizedException(UserNotAuthorizedException exception,
+                                                              WebRequest request) {
+        logger.warn(exception.getMessage());
+        return new ResponseEntity<>(Map.of("message", exception.getMessage()),
+                HttpStatus.FORBIDDEN);
     }
 }
