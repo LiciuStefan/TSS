@@ -26,9 +26,9 @@ public class TaxCalculator {
 
         // Salary tax calculation
         double taxableSalary = optsForFoodTickets ? salary * 0.8 : salary;
-        if (taxableSalary > 6000) {
+        if (taxableSalary >= 6001) {
             totalTax += (taxableSalary - 6000) * 0.4 + 3000 * 0.2;
-        } else if (taxableSalary > 3000) {
+        } else if (taxableSalary >= 3001) {
             totalTax += (taxableSalary - 3000) * 0.2;
         }
 
@@ -39,7 +39,7 @@ public class TaxCalculator {
 
         // Dividends tax calculation
         totalTax += dividends * 0.08;
-        if (dividends > 10000) {
+        if (dividends >= 10001) {
             totalTax += 1000;
         }
 

@@ -5,6 +5,7 @@ plugins {
 	id 'java'
 	id 'jacoco'
 	id 'io.freefair.lombok' version '6.6'
+	id 'info.solidsoft.pitest' version '1.15.0'
 }
 
 group = 'ro.unibuc'
@@ -68,6 +69,18 @@ test {
 jacocoTestReport {
 	dependsOn test
 }
+
+pitest {
+	targetClasses = ['ro.unibuc.hello.services.TaxCalculator']
+	pitestVersion = '1.15.0'
+	threads = 4
+	outputFormats = ['XML', 'HTML']
+	timestampedReports = false
+	junit5PluginVersion = '1.2.1'
+	targetTests = ['ro.unibuc.hello.services.TaxCalculatorTest']
+}
+
+
 
 task testIT(type: Test) {
 	outputs.dir snippetsDir
