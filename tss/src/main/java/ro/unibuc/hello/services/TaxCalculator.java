@@ -8,9 +8,6 @@ public class TaxCalculator {
     private Boolean optsForFoodTickets;
 
     public TaxCalculator(double salary, double dividends, double rentalIncome, Boolean hasDiploma, Boolean optsForFoodTickets) {
-//        if (salary.equals(null) || dividends.equals(null) || rentalIncome.equals(null) || hasDiploma.equals(null) || optsForFoodTickets.equals(null)) {
-//            throw new IllegalArgumentException("None of the arguments can be null");
-//        }
         if (salary < 0 || dividends < 0 || rentalIncome < 0) {
             throw new IllegalArgumentException("Income values cannot be negative");
         }
