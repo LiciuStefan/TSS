@@ -17,7 +17,7 @@ public class TaxCalculatorTest{
     }
 
     @Test
-    public void testNegativeDivident() {
+    public void testNegativeDividend() {
         assertThrows(IllegalArgumentException.class, () -> {
             new TaxCalculator(2500, -1, 500, true, false).calculateTax();
         });
