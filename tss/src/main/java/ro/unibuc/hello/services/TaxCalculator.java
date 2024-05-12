@@ -46,7 +46,7 @@ public class TaxCalculator {
         return totalTax;
     }
 
-    public void Main(String[] args)
+    public static void main(String[] args)
     {
         TaxCalculator a = new TaxCalculator(3500, 0, 2000, false, true);
         System.out.println(a.calculateTax());
